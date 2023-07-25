@@ -13,7 +13,7 @@ function App() {
 
   useEffect(() => {
     const tasks = JSON.parse(localStorage.getItem('tasks'));
-    setTasks(tasks);
+    setTasks(tasks || []);
   }, []);
 
   function addTask(name) {
@@ -22,13 +22,13 @@ function App() {
     })
   }
 
-  function removeTask (indexToRemove){
+  function removeTask(indexToRemove) {
     setTasks(prev => {
       return prev.filter((taskObject, index) => index !== indexToRemove)
     })
   }
 
-  function updateTaskDone (taskIndex, newDone){
+  function updateTaskDone(taskIndex, newDone) {
     setTasks(prev => {
       const newTasks = [...prev];
       newTasks[taskIndex].done = newDone;
@@ -40,11 +40,11 @@ function App() {
   const numberTotal = tasks.length;
 
   function getMessage() {
-    const percentage = numberComplete/numberTotal *100;
-    if(percentage === 0) {
+    const percentage = numberComplete / numberTotal * 100;
+    if (percentage === 0) {
       return 'Try to do atleast one! 👏'
     }
-    if (percentage === 100){
+    if (percentage === 100) {
       return 'Congrats! You are done! 🎉'
     }
     return 'keep it going! 💪'
@@ -60,15 +60,15 @@ function App() {
 
   return (
     <main>
-    <h1>{numberComplete}/{numberTotal} Complete</h1>
-    <h2>{getMessage()}</h2>
+      <h1>{numberComplete}/{numberTotal} Complete</h1>
+      <h2>{getMessage()}</h2>
       <TaskForm onAdd={addTask} />
       {tasks.map((task, index) =>
-        <Task {...task} 
-        onTrash={() => removeTask(index)}
-        onToggle={done => updateTaskDone(index, done)} 
-        key={index}
-        onRename={newName => renameTask(index, newName)}
+        <Task {...task}
+          onTrash={() => removeTask(index)}
+          onToggle={done => updateTaskDone(index, done)}
+          key={index}
+          onRename={newName => renameTask(index, newName)}
         />
       )}
     </main>
